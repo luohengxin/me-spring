@@ -58,7 +58,7 @@ public class ApplicationContext {
             for(String className: classNames){
 
                 Class<?> aClass = Class.forName(className);
-                if(needInstance(aClass)){
+                if(aClass.isAnnotationPresent(Component.class)){
                     Object o = aClass.newInstance();
                     String beanName = getBeanName(aClass);
                      if(cache.containsKey(beanName)){
@@ -80,14 +80,6 @@ public class ApplicationContext {
             beanName = annotation.value();
         }
         return beanName;
-    }
-
-    private boolean needInstance(Class<?> aClass) {
-        Component annotation = aClass.getAnnotation(Component.class);
-        if(annotation != null){
-            return true;
-        }
-        return false;
     }
 
     private void doScanner(String basePackage) {
